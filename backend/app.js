@@ -2,7 +2,11 @@ const express = require('express');
 require('dotenv').config();
 const { connectToMongo } = require('./services/dbService.js');
 const { securityMiddlewares } = require('./middlewares/securityMiddleware.js');
+
+
 const utilityRoutes = require('./routes/utilityRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
+
 const app = express();
 
 app.use(express.json());
@@ -20,6 +24,7 @@ app.use((req, res, next) => {
 
 
 app.use('/v1/utility', utilityRoutes);
+app.use('./v1/auth', authRoutes);
 
 const port = process.env.API_PORT || 3000
 connectToMongo();
