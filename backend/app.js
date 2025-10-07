@@ -4,6 +4,13 @@ const { connectToMongo } = require('./services/dbService.js');
 const { securityMiddlewares } = require('./middlewares/securityMiddleware.js');
 
 const https = require('https')
+const fs = require('fs');
+
+//create new variables to hold where cert lives
+const options = {
+    key: fs.readFileSync('./certs/localhost+1-key.pem'),
+    cert: fs.readFileSync('./certs/localhost+1.pem'),
+}
 
 const utilityRoutes = require('./routes/utilityRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
