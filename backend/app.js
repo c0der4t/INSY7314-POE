@@ -38,6 +38,12 @@ const port = process.env.API_PORT || 3000
 connectToMongo();
 
 
-app.listen(port, () => {
-    console.log(`The API is now listening on port ${port}.`)
-});
+//app.listen(port, () => {
+//    console.log(`The API is now listening on port ${port}.`)
+//});
+
+//we are using the https library to create a secure listener, it takes in the options created before, then 
+//tell it that we want to run our express aoo, what port and what to print out
+https.createServer(options, app).listen(433, () => {
+    console.log(`The API is now securely listening on port 443.`)
+})
