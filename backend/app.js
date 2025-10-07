@@ -3,6 +3,7 @@ require('dotenv').config();
 const { connectToMongo } = require('./services/dbService.js');
 const { securityMiddlewares } = require('./middlewares/securityMiddleware.js');
 
+const https = require('https')
 
 const utilityRoutes = require('./routes/utilityRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
