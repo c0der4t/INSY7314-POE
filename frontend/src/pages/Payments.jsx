@@ -3,6 +3,4 @@ import { createPayment,
     getLoggedInPayments
  } from '../../services/apiService'
 
- export default function Payments() {
-    const []
- }
+ export default function Payments() {}
