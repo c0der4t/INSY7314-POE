@@ -9,10 +9,13 @@ export default defineConfig({
   //set server
   server:{
     //https settings
-    https:{
+    //https:{
       //pass it private key and cert files
-      key: fs.readFileSync('./certs/localhost+1-key.pem'),
-      cert: fs.readFileSync('./certs/localhost+1.pem'),
-    }
+      //key: fs.readFileSync('./certs/localhost+1-key.pem'),
+      //cert: fs.readFileSync('./certs/localhost+1.pem'),
+
+    //}
+    port: 3000,
+    https: false
   }
 })
