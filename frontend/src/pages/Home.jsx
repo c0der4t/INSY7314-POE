@@ -1,4 +1,5 @@
 import React from 'react'
+import '../index.css'
 import { useEffect } from "react"
 import { useAuth } from '../context/AuthContext'
 import { Navigate, useNavigate, useNavigation } from 'react-router-dom'
