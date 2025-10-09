@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').configure();
+require('dotenv').config();
 
 //blacklist of tokens that we have invalidated
 const tokenBlacklist = new Set();
