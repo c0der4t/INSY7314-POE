@@ -86,6 +86,8 @@ const validateInputs = (req, res, next) => {
     next();
 };
 
+module.exports = { validateInputs }
+
 //Reference List
 //Ball, M. 2011. JavaScript regex for amount. [Online] Stack Overflow. Available at: https://stackoverflow.com/questions/7689817/javascript-regex-for-amount [Accessed 7 October 2025].
 //blhsing. 2019. Regex with ISO currency and string match. [Online] Stack Overflow. Available at: https://stackoverflow.com/questions/57663902/regex-with-iso-currency-and-string-match [Accessed 7 October 2025].
