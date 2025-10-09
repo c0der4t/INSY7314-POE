@@ -2,12 +2,12 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    //this is the base URL, meaning that it must go before any API call we make with axios
-    baseURL: 'http://localhost:3001/v1',
+    // this is the BASE URL, meaning that it must go before any API call we make with axios
+    baseURL: 'http://localhost:3000/v1',
     // we also tell it that we want to ask the server to respond with JSON, rather than cleartext
     headers: {
         'Content-Type': 'application/json'
     },
-})
+});
 
-export default axiosInstance
+export default axiosInstance;

@@ -1,23 +1,58 @@
 import './Login.css';
-import piggyBank from '../../assets/Images/piggy-bank.png'; 
+import piggyBank from '../../assets/Images/piggy-bank.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { loginApi } from '../../Methods/Login';
+import { useState, useEffect } from 'react';
+import { loginUser as loginApi } from '../../../services/apiService'; // updated import
+import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {
-  const [userName, setUserName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: '',
+    accountNumber: '',
+    password: ''
+  });
 
-  async function myLogin() {
-    const result = await loginApi({ userName, accountNumber, password });
-    if (result.success) {
-      navigate('/dashboard');
-    } else {
-      alert(result.message || 'Login failed');
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  useEffect(() => {
+    setFormData({
+      username: '',
+      accountNumber: '',
+      password: ''
+    });
+  }, []);
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // send payload matching loginUser service
+      const res = await loginApi({
+        username: formData.username,
+        accountNumber: formData.accountNumber,
+        password: formData.password
+      });
+
+      if (res?.data?.token) {
+        // store token in context or localStorage
+        login(res.data);
+        alert('Login successful!');
+        navigate('/dashboard');
+      } else {
+        alert('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('Login failed:', error.response?.data || error.message);
+      alert('Login failed. Please check your credentials.');
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -25,37 +60,42 @@ export default function Login() {
       <img src={piggyBank} alt="Piggy Bank" />
       <h2 className="sub-heading">Login</h2>
 
-      <label htmlFor="username">Username:</label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        placeholder="Enter your username"
-        value={userName}
-        onChange={e => setUserName(e.target.value)}
-      />
+      <form onSubmit={handleSubmit} className="form">
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          value={formData.username}
+          onChange={handleInputChange}
+          required
+        />
 
-      <label htmlFor="accountNumber">Account Number:</label>
-      <input
-        type="text"
-        id="accountNumber"
-        name="accountNumber"
-        placeholder="Enter your account number"
-        value={accountNumber}
-        onChange={e => setAccountNumber(e.target.value)}
-      />
+        <label htmlFor="accountNumber">Account Number:</label>
+        <input
+          type="text"
+          id="accountNumber"
+          name="accountNumber"
+          placeholder="Enter your account number"
+          value={formData.accountNumber}
+          onChange={handleInputChange}
+          required
+        />
 
-      <label htmlFor="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter your password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-      />
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          value={formData.password}
+          onChange={handleInputChange}
+          required
+        />
 
-      <button className="loginBtn" onClick={myLogin}>Login</button>
+        <button type="submit" className="loginBtn">Login</button>
+      </form>
 
       <Link to="/signup">
         <button className="signupBtn">Signup</button>
