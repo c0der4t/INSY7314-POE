@@ -1,24 +1,18 @@
-export async function loginApi({ userName, accountNumber, password }) {
+import axios from '../../interfaces/axiosInstance';
+
+export const loginApi = async (payload) => {
   try {
-    const response = await fetch('http://localhost:5000/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: userName,
-        accNum: accountNumber,
-        password,
-      }),
-    });
-
-    const data = await response.json();
-
+    const response = await axios.post('/auth/login', payload);
     return {
-      success: response.ok,
-      message: data.message,
-      data,
+      success: true,
+      message: response.data.message,
+      data: response.data,
     };
   } catch (err) {
-    console.error('Error:', err);
-    return { success: false, message: 'Network or server error' };
+    console.error('Login error:', err.response || err);
+    return {
+      success: false,
+      message: err.response?.data?.message || 'Network or server error',
+    };
   }
-}
+};
