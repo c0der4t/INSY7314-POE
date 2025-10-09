@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { invalidateToken } = require('../middlewares/authMiddleware');
 const User = require('../models/userModel');
-require('dotenv').configure();
+require('dotenv').config();
 
 const generateJwt = (username) => {
     //signs it using the secret from our .env file
