@@ -12,20 +12,17 @@ export default function Home(){
         navigate("/payments")
     }
 
-    const handleLogout = () => {
-        navigate("/login")
+    const handleLogin = () => {
+        navigate("./login")
     }
 
     return(
         <div>
-            <h1>Dashboard</h1>
-            <div>
-                <button onClick={handlePayNow}>Pay Now</button>
+            <h1>Home Page</h1>
                 <div><br/>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button onClick={handleLogin}>Login</button>
                 </div>
             </div>
-        </div>   
         
     )
 }
