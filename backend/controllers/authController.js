@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { invalidateToken } = require('../middlewares/authMiddleware');
 const User = require('../models/userModel');
+
 require('dotenv').config();
 
 // Fixed: return the signed token
@@ -20,16 +21,16 @@ const register = async (req, res) => {
         const exists = await User.findOne({ username });
         if (exists) return res.status(400).json({ message: "Username already exists" });
 
-        // hash password (with salt rounds = 10)
-        const hashedPassword = await bcrypt.hash(password, 10);
+    //hashed pw with 10 salt rounds
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        // create user
-        await User.create({
-            username,
-            idNum,
-            accNum,
-            password: hashedPassword
-        });
+    //create the user
+    await User.create({
+      username,
+      idNum,
+      accNum,
+      password: hashedPassword
+    });
 
         // return token
         const token = generateJwt(username);
