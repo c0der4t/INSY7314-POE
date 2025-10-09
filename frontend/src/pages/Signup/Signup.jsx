@@ -21,6 +21,22 @@ export default function Signup() {
         placeholder="Enter your username"
       />
 
+      <label htmlFor="idNumber">ID Number:</label>
+      <input
+        type="text"
+        id="idNumber"
+        name="idNumber"
+        placeholder="Enter your ID number"
+      />
+
+      <label htmlFor="accountNumber">Account Number:</label>
+      <input
+        type="text"
+        id="accountNumber"
+        name="accountNumber"
+        placeholder="Enter your account number"
+      />
+
       <label htmlFor="password">Password:</label>
       <input
         type="password"
