@@ -4,21 +4,20 @@ const { invalidateToken } = require('../middlewares/authMiddleware');
 const User = require('../models/userModel');
 require('dotenv').config();
 
+// Fixed: return the signed token
 const generateJwt = (username) => {
-    //signs it using the secret from our .env file
-    jwt.sign(username, process.env.JWT_SECRET,  {
-        // set an expiry of 1 hour from signing 
-        expiresIn: '1h' //token valid for 1 hour
-    });
-    //and returns it
-}
+    return jwt.sign(
+        { username }, // payload must be an object
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' } // token valid for 1 hour
+    );
+};
 
 const register = async (req, res) => {
-    //pull the required info from the incoming request
     const { username, password, idNum, accNum } = req.body;
     try {
         // check if user already exists
-        const exists = await User.findOne({ username: username });
+        const exists = await User.findOne({ username });
         if (exists) return res.status(400).json({ message: "Username already exists" });
 
         // hash password (with salt rounds = 10)
@@ -33,7 +32,8 @@ const register = async (req, res) => {
         });
 
         // return token
-        res.status(200).json({ token: generateJwt(username) });
+        const token = generateJwt(username);
+        res.status(200).json({ token });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
@@ -41,32 +41,29 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-    try{
-    const exists = await User.findOne({username: username})
-    //if the user is not present in our collection, let them know to try again
-    if (!exists) return res.status(400).json({message: 'Invalid credentials'});
-    // next, if the user DOES exist, we compare their entered password to what we have on file
-    const matching = await bcrypt.compare(password, exists.password);
-    //if they dont match, return invalid credentials message
-    if(!matching) return res.status(400).json({message: 'Invalid credentials'});
-    //otherwise, generate a token and log them in
-    res.status(200).json({token: generateJwt(username)});
+    try {
+        const exists = await User.findOne({ username });
+        if (!exists) return res.status(400).json({ message: 'Invalid credentials' });
+
+        const matching = await bcrypt.compare(password, exists.password);
+        if (!matching) return res.status(400).json({ message: 'Invalid credentials' });
+
+        const token = generateJwt(username);
+        res.status(200).json({ token });
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).json({ error: e.message });
     }
-}
+};
 
 const logout = async (req, res) => {
-    //strip the header
-    const authHeader = req.header['authorization'];
-    //get the token (bearer: <token>)
-    const token = authHeader.split(" ")[1];
-    // check if there is indeed a token, if not, tell the user
-    if (!token) return res.status(400).json({message: 'No token provided'});
-    //otherwise invalidate the token
-    invalidateToken(token);
-    // and log them out
-    res.status(200).json({message: "Logged out successfully"});
-}
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) return res.status(400).json({ message: 'No token provided' });
 
-module.exports = {register, login, logout};
+    const token = authHeader.split(" ")[1];
+    if (!token) return res.status(400).json({ message: 'No token provided' });
+
+    invalidateToken(token);
+    res.status(200).json({ message: "Logged out successfully" });
+};
+
+module.exports = { register, login, logout };
