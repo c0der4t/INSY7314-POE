@@ -34,6 +34,10 @@ const apiLimiter = rateLimit({
 
 
 
+const utilityRoutes = require('./routes/utilityRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
+
+
 app.use('/v1', apiLimiter);
 
 

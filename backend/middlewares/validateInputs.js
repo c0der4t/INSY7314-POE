@@ -13,7 +13,7 @@ const validateInputs = (req, res, next) => {
     //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
     //Wiktor Stribizew
     //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
-    const passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"; //min 8 chars, at least 1 upper and lower, one number and one special char
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //min 8 chars, at least 1 upper and lower, one number and one special char
 
     //Code Attribution
     //This regex pattern for an id number was taken from StackOverflow
