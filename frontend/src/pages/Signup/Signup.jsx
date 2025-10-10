@@ -60,7 +60,7 @@ export default function Signup() {
   //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
   //Wiktor Stribizew
   //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
   const validateClientSide = ({ username, idNum, accNum, password }) => {
     if (!username || !idNum || !accNum || !password) return 'Please fill in all fields.';
