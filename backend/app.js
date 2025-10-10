@@ -22,17 +22,6 @@ const app = express();
 
 app.use(express.json());
 
-//sanatize
-
-// app.use(mongoSanitize({
-//   replaceWith: '_',
-//   // Only sanitize the body, not query or params
-//   checkQuery: false,
-//   checkParams: false
-// }));
-
-
-
 
 securityMiddlewares(app);
 
