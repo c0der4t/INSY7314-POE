@@ -40,8 +40,8 @@ export default function Payments() {
 
   const amountRegex = /^\d+(\.\d{1,2})?$/;
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
-  const swiftCodeRegex = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
-  const currencyRegex = /\b(?:USD|AUD|BRL|GBP|CAD|CNY|DKK|AED|EUR|HKD|INR|MYR|MXN|NZD|PHP|SGD|THB|ARS|COP|CLP|PEN|VEF|ZAR)\b/;
+  const swiftCodeRegex = /[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?/i;
+  const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/;
 
   const validateClientSide = ({ amount, destinationAccount, swiftCode, currency }) => {
     if (!amount || !destinationAccount || !swiftCode) {

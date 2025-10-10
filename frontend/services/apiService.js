@@ -11,7 +11,6 @@ export const loginUser = (payload) => axios.post('/auth/login', payload);
 export const logoutUser = () => axios.get('/auth/logout');
 
 //endpoints for the payments
-// services/apiService.js
 export const createPayment = (paymentData, config = {}) => axios.post('/payments/create', paymentData, config);
 
 //payments for the logged in user

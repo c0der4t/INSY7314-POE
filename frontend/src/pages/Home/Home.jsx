@@ -1,5 +1,3 @@
-import React from 'react'
-import { Navigate, useNavigate, useNavigation } from 'react-router-dom'
 import piggyBank from '../../assets/Images/piggy-bank.png'; 
 import './Home.css';
 
