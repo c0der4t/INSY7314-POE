@@ -2,7 +2,7 @@ import './Login.css';
 import piggyBank from '../../assets/Images/piggy-bank.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { loginUser as loginApi } from '../../../services/apiService'; // updated import
+import { loginUser as loginApi } from '../../../services/apiService';
 import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {
@@ -16,32 +16,37 @@ export default function Login() {
   const { login } = useAuth();
 
   useEffect(() => {
-    setFormData({
-      username: '',
-      accountNumber: '',
-      password: ''
-    });
+    setFormData({ username: '', accountNumber: '', password: '' });
   }, []);
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
+  const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const validateClientSide = ({ username, accountNumber, password }) => {
+    if (!username || !accountNumber || !password) return 'Please fill in all fields.';
+    if (!usernameRegex.test(username.trim())) return 'Invalid username format.';
+    if (!accNumRegex.test(accountNumber.trim())) return 'Invalid account number format.';
+    if (!passwordRegex.test(password.trim())) return 'Password must be 8+ chars with uppercase, lowercase, number & special char.';
+    return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // send payload matching loginUser service
-      const res = await loginApi({
-        username: formData.username,
-        accountNumber: formData.accountNumber,
-        password: formData.password
-      });
 
+    const validationError = validateClientSide(formData);
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
+    try {
+      const res = await loginApi(formData);
       if (res?.data?.token) {
-        // store token in context or localStorage
         login(res.data);
         alert('Login successful!');
         navigate('/dashboard');
