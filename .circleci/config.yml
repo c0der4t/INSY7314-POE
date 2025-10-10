@@ -36,13 +36,9 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Setup SSH Key
-          command: |
-            mkdir -p ~/.ssh
-            echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keyscan -H 168.119.165.47 >> ~/.ssh/known_hosts
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:dmBspqA5wp3YMYb3CPImJj/c9cOMePk7+t52LlDxj7c"
 
       - run:
           name: Build Docker Images
@@ -51,20 +47,20 @@ jobs:
       - run:
           name: Upload API Image
           command: |
-            docker save stoinksapi:latest | ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
+            docker save stoinksapi:latest | ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
 
       - run:
           name: Upload Frontend Image
           command: |
-            docker save stoinksfrontend:latest | ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
+            docker save stoinksfrontend:latest | ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
 
       - run:
           name: Upload Compose File
-          command: scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no docker-compose.yml root@168.119.165.47:/tmp/stoinks
+          command: scp -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no docker-compose.yml root@168.119.165.47:/tmp/stoinks
 
       - run:
           name: Deploy Containers
-          command: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@168.119.165.47 'cd /tmp/stoinks && docker compose up -d --no-build'
+          command: ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'cd /tmp/stoinks && docker compose up -d --no-build'
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
 workflows:
