@@ -16,6 +16,16 @@ const generateJwt = (username) => {
 
 const register = async (req, res) => {
     const { username, password, idNum, accNum } = req.body;
+
+    username = String(username).trim();
+    password = String(password);
+    idNum = String(idNum).trim();
+    accNum = String(accNum).trim();
+
+    if (!username || !password || !idNum || !accNum) {
+        return res.status(400).json({ message: "All fields are required and must be strings" });
+    }
+
     try {
         // check if user already exists
         const exists = await User.findOne({ username });
@@ -41,9 +51,18 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, accNum  } = req.body;
+
+    username = String(username).trim();
+    password = String(password);
+    accNum = String(accNum).trim();
+
+    if (!username || !password || !accNum) {
+        return res.status(400).json({ message: "All fields are required and must be strings" });
+    }
+
     try {
-        const exists = await User.findOne({ username });
+        const exists = await User.findOne({ username, accNum });
         if (!exists) return res.status(400).json({ message: 'Invalid credentials' });
 
         const matching = await bcrypt.compare(password, exists.password);
