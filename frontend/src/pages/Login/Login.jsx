@@ -2,7 +2,7 @@ import './Login.css';
 import piggyBank from '../../assets/Images/piggy-bank.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { loginUser as loginApi } from '../../../services/apiService'; // updated import
+import { loginUser as loginApi } from '../../../services/apiService';
 import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {
@@ -16,6 +16,10 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  useEffect(() => {
+    setFormData({ username: '', accountNumber: '', password: '' });
+  }, []);
+  
     useEffect(() => {
       try {
 
@@ -32,26 +36,48 @@ export default function Login() {
 
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  //Code Attribution
+  //This regex pattern for the username was taken from StackOverflow
+  //https://stackoverflow.com/questions/9628879/javascript-regex-username-validation
+  //Jason McCreary
+  //https://stackoverflow.com/users/164998/jason-mccreary
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
+  //Code Attribution
+  //This regex pattern for the account number was taken from StackOverflow
+  //https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns
+  //eddy
+  //https://stackoverflow.com/users/530911/eddy
+  const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
+  //Code attribution
+   //This Regex pattern for the password was taken from StackOverflow
+   //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+   //Wiktor Stribizew
+   //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const validateClientSide = ({ username, accountNumber, password }) => {
+    if (!username || !accountNumber || !password) return 'Please fill in all fields.';
+    if (!usernameRegex.test(username.trim())) return 'Invalid username format.';
+    if (!accNumRegex.test(accountNumber.trim())) return 'Invalid account number format.';
+    if (!passwordRegex.test(password.trim())) return 'Password must be 8+ chars with uppercase, lowercase, number & special char.';
+    return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationError = validateClientSide(formData);
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+
     try {
-      // send payload matching loginUser service
-      const res = await loginApi({
-        username: formData.username,
-        accountNumber: formData.accountNumber,
-        password: formData.password
-      });
-
-      //console.log('Login response:', res);
-
+      const res = await loginApi(formData);
       if (res?.data?.token) {
-        // store token in context or localStorage
         login(res.data);
         navigate('/dashboard');
       } else {

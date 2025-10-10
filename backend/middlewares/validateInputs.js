@@ -41,7 +41,7 @@ const validateInputs = (req, res, next) => {
     //https://stackoverflow.com/questions/57663902/regex-with-iso-currency-and-string-match
     //blhsing
     //https://stackoverflow.com/users/6890912/blhsing
-    const currencyRegex = /\b(?:USD|AUD|BRL|GBP|CAD|CNY|DKK|AED|EUR|HKD|INR|MYR|MXN|NZD|PHP|SGD|THB|ARS|COP|CLP|PEN|VEF|ZAR)\b/;
+    const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/;
 
     //Code Attribution
     //This regex pattern for the SWIFT code was taken from StackOverflow

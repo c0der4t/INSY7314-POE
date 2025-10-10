@@ -15,7 +15,7 @@ export function AuthProvider({children}) {
     };
     
 
-    const regesiter = () => setIsAuthenticated(false);
+    const registerUser = () => setIsAuthenticated(false);
     
 
     const logout = () => {
