@@ -1,6 +1,8 @@
 services:
   api:
     image: stoinksapi:latest
+    env_file:
+      - .env
     build:
       context: ./backend
     ports:
