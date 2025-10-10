@@ -60,7 +60,7 @@ jobs:
 
       - run:
           name: Deploy Containers
-          command: ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'cd /tmp/stoinks && docker compose up -d --no-build'
+          command: ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'cd /tmp/stoinks && CONN_STRING=$CONN_STRING docker compose up -d --no-build'
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
 workflows:
