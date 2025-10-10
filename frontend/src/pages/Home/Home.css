@@ -3,7 +3,7 @@ html, body {
   height: 100%; 
 }
 
-.heading{
+.heading, h3{
 color: #000000;
 }
 
@@ -59,15 +59,16 @@ font-size: 32px;
   opacity: 1;        
 }
 
-.container .signupBtn {
-  background-color: #fea613 !important;
+
+.container button:first-of-type {
+  background-color: #fea613;
   color: white;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-   width: 150px;
+  width: 150px;
 }
 
-.container .loginBtn {
-  background-color: #fd8087 !important;
+.container button:last-of-type {
+  background-color: #fd8087;
   color: white;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
    width: 150px;

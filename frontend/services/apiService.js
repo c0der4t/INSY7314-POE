@@ -11,7 +11,15 @@ export const loginUser = (payload) => axios.post('/auth/login', payload);
 export const logoutUser = () => axios.get('/auth/logout');
 
 //endpoints for the payments
-export const createPayment = (paymentData) => axios.post('/payments/create', paymentData);
+// (Khatri, 2017)
+export const createPayment = (paymentData, token) =>
+    axios.post('/payment/add', paymentData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+});
+  
 
 //payments for the logged in user
 export const getLoggedInPayments = () => axios.get('/payments/logged-in');
@@ -21,3 +29,7 @@ export const getPendingPayments = () => axios.get('/employee/pending');
 
 //employee verifies a payment
 export const verifyPayment = (id) => axios.post(`/employee/verify/${id}`); 
+
+
+// References
+// Khatri, S. 2017. ‘Answer to “Passing headers with axios POST request”’. [Online]. Available at: https://stackoverflow.com/a/44617848/11914974 [Accessed 10 October 2025].
