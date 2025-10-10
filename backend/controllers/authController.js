@@ -6,25 +6,17 @@ const User = require('../models/userModel');
 require('dotenv').config();
 
 // Fixed: return the signed token
-const generateJwt = (username) => {
+const generateJwt = (user) => {
     return jwt.sign(
-        { username }, // payload must be an object
+        { id: user._id, username: user.username }, // payload must be an object
         process.env.JWT_SECRET,
         { expiresIn: '1h' } // token valid for 1 hour
     );
 };
 
 const register = async (req, res) => {
+
     const { username, password, idNum, accNum } = req.body;
-
-    username = String(username).trim();
-    password = String(password);
-    idNum = String(idNum).trim();
-    accNum = String(accNum).trim();
-
-    if (!username || !password || !idNum || !accNum) {
-        return res.status(400).json({ message: "All fields are required and must be strings" });
-    }
 
     try {
         // check if user already exists
@@ -35,7 +27,7 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //create the user
-    await User.create({
+    const createdUser = await User.create({
       username,
       idNum,
       accNum,
@@ -43,11 +35,18 @@ const register = async (req, res) => {
     });
 
         // return token
-        const token = generateJwt(username);
-        res.status(200).json({ token });
+        const token = generateJwt(createdUser);
+
+        res.status(200).json({ 
+            token, 
+            user: { id: createdUser._id, username: createdUser.username } 
+        });
+
+
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
+
 };
 
 const login = async (req, res) => {
@@ -62,18 +61,21 @@ const login = async (req, res) => {
     }
 
     try {
-        const exists = await User.findOne({ username, accNum });
-        if (!exists) return res.status(400).json({ message: 'Invalid credentials' });
 
-        const matching = await bcrypt.compare(password, exists.password);
+        const foundUser = await User.findOne({ username, accNum  });
+        if (!foundUser) return res.status(400).json({ message: 'Invalid credentials' });
+
+        const matching = await bcrypt.compare(password, foundUser.password);
         if (!matching) return res.status(400).json({ message: 'Invalid credentials' });
 
-        const token = generateJwt(username);
+        const token = generateJwt(foundUser);
         res.status(200).json({ token });
+
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
 };
+
 
 const logout = async (req, res) => {
     const authHeader = req.headers['authorization'];

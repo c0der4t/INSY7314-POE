@@ -36,6 +36,7 @@ const apiLimiter = rateLimit({
 
 const utilityRoutes = require('./routes/utilityRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
+const paymentRoutes = require('./routes/paymentRoutes.js');
 
 
 app.use('/v1', apiLimiter);
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 
 app.use('/v1/utility', utilityRoutes);
 app.use('/v1/auth', authRoutes);
+app.use('/v1/payment', paymentRoutes);
 
 const port = process.env.API_PORT || 3001
 connectToMongo();

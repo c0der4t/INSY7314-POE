@@ -9,12 +9,12 @@ export default defineConfig({
   //set server
   server:{
     //https settings
-    https:{
-      //pass it private key and cert files
-      key: fs.readFileSync('../localhost+1-key.pem'),
-      cert: fs.readFileSync('../localhost+1.pem'),
+    // https:{
+    //   //pass it private key and cert files
+    //   key: fs.readFileSync('../localhost+1-key.pem'),
+    //   cert: fs.readFileSync('../localhost+1.pem'),
 
-    },
+    // },
     port: 5173,
     //https: false,
     allowedHosts: ['stoinks.devpanda.work', 'localhost'],

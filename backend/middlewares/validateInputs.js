@@ -13,14 +13,14 @@ const validateInputs = (req, res, next) => {
     //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
     //Wiktor Stribizew
     //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //min 8 chars, at least 1 upper and lower, one number and one special char
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/; //min 8 chars, at least 1 upper and lower, one number and one special char
 
     //Code Attribution
     //This regex pattern for an id number was taken from StackOverflow
     //https://stackoverflow.com/questions/29383955/how-to-write-a-regex-javascript-for-an-id-validation
     //Ishettyl
     //https://stackoverflow.com/users/572827/lshettyl
-    const idNumRegex = /^\d{6}-?\d{7}$/; //id num for 13 digits with a possible - seperating 6 from 7 digits
+    const idNumRegex = /^\d{6}-?\d{7}$/; //id num for 10 digits with a possible - seperating 6 from 4 digits
 
     //Code Attribution
     //This regex pattern for the account number was taken from StackOverflow
