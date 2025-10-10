@@ -33,9 +33,9 @@ app.use((req, res, next) => {
 
 
 app.use('/v1/utility', utilityRoutes);
-app.use('./v1/auth', authRoutes);
+app.use('/v1/auth', authRoutes);
 
-const port = process.env.API_PORT || 3000
+const port = process.env.API_PORT || 3001
 connectToMongo();
 
 
