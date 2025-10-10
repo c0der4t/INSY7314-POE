@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import piggyBank from '../../assets/Images/piggy-bank.png'; 
 import './Home.css';
 
@@ -7,6 +7,23 @@ import './Home.css';
 export default function Home(){
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+      try {
+
+        //alert('Frame-buster check running!');
+        
+        if (window.top !== window.self) {
+          alert('This page cannot be displayed inside a frame.');
+          window.top.location.href = window.location.href;
+        }
+      } catch (err) {
+        alert('This page cannot be displayed inside a frame.');
+      }
+    }, []);
+
+
+      
 
     const handleLogin = () => {
         navigate("./login")

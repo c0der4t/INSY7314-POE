@@ -8,7 +8,7 @@ export function AuthProvider({children}) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const login = () => setIsAuthenticated(true);
-    const regesiter = () => setIsAuthenticated(false);
+    const registerUser = () => setIsAuthenticated(false);
     const logout = () => setIsAuthenticated(false);
 
     return (

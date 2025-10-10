@@ -1,9 +1,26 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import React, { useEffect } from 'react';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+
+    // Frame-buster: (primary protection should be CSP / X-Frame-Options headers)
+    
+    useEffect(() => {
+      try {
+
+        //alert('Frame-buster check running!');
+        
+        if (window.top !== window.self) {
+          alert('This page cannot be displayed inside a frame.');
+          window.top.location.href = window.location.href;
+        }
+      } catch (err) {
+        alert('This page cannot be displayed inside a frame.');
+      }
+    }, []);
+
 
   const handlePayNow = () => {
     navigate('/payments');
