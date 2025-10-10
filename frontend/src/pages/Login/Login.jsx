@@ -15,13 +15,20 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  useEffect(() => {
-    setFormData({
-      username: '',
-      accountNumber: '',
-      password: ''
-    });
-  }, []);
+    useEffect(() => {
+      try {
+
+        //alert('Frame-buster check running!');
+        
+        if (window.top !== window.self) {
+          alert('This page cannot be displayed inside a frame.');
+          window.top.location.href = window.location.href;
+        }
+      } catch (err) {
+        alert('This page cannot be displayed inside a frame.');
+      }
+    }, []);
+
 
   const handleInputChange = (e) => {
     setFormData({
