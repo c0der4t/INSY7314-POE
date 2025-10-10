@@ -6,6 +6,7 @@ import { loginUser as loginApi } from '../../../services/apiService'; // updated
 import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {
+  
   const [formData, setFormData] = useState({
     username: '',
     accountNumber: '',
@@ -47,10 +48,11 @@ export default function Login() {
         password: formData.password
       });
 
+      //console.log('Login response:', res);
+
       if (res?.data?.token) {
         // store token in context or localStorage
         login(res.data);
-        alert('Login successful!');
         navigate('/dashboard');
       } else {
         alert('Login failed. Please check your credentials.');
