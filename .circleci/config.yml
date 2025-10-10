@@ -5,6 +5,8 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
 jobs:
+
+
   sonarqube:
     working_directory: ~/build
     docker:
@@ -26,6 +28,39 @@ jobs:
           -Dsonar.login="$SONAR_TOKEN" \
           -Dsonar.branch.name="$SONAR_BRANCH" \
           -Dsonar.sources="."
+
+  deploytoprod:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: medium
+    steps:
+      - checkout
+
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:dmBspqA5wp3YMYb3CPImJj/c9cOMePk7+t52LlDxj7c"
+
+      - run:
+          name: Build Docker Images
+          command: docker compose build
+
+      - run:
+          name: Upload API Image
+          command: |
+            docker save stoinksapi:latest | ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
+
+      - run:
+          name: Upload Frontend Image
+          command: |
+            docker save stoinksfrontend:latest | ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
+
+      - run:
+          name: Upload Compose File
+          command: scp -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no docker-compose.yml root@168.119.165.47:/tmp/stoinks
+
+      - run:
+          name: Deploy Containers
+          command: ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'cd /tmp/stoinks && docker compose up -d --no-build'
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
 workflows:
@@ -33,3 +68,12 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - sonarqube
+      - deploytoprod:
+          requires:
+            - sonarqube
+          filters:
+            branches:
+              only:
+                - main
+                - working
+                - cicd
