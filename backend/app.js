@@ -51,7 +51,6 @@ securityMiddlewares(app);
 
 app.use((req, res, next) => {
 
-    // TODO: Remove the excess logging
     console.log(`${req.method} ${req.url}`)
     next();
 });
