@@ -30,8 +30,8 @@ jobs:
           -Dsonar.sources="."
 
   deploytoprod:
-    docker:
-      - image: cimg/base:stable
+    machine:
+      - image: ubuntu-2204:current
     resource_class: medium
     steps:
       - checkout
