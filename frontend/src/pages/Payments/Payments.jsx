@@ -1,6 +1,6 @@
 import './Payments.css';
-import React, { useState, useEffect } from 'react';
-import { createPayment as paymentApi } from '../../../services/apiService'; // adjust path if needed
+import React, { useState, useEffect } from 'react'; 
+import { createPayment as paymentApi } from '../../../services/apiService';
 import { useNavigate } from 'react-router-dom';
 
 export default function Payments() {
@@ -40,8 +40,8 @@ export default function Payments() {
 
   const amountRegex = /^\d+(\.\d{1,2})?$/;
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
-  const swiftCodeRegex = /[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?/i;
-  const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/;
+  const swiftCodeRegex = /[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?/i; //going to check this
+  const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/; //only currencies we use
 
   const validateClientSide = ({ amount, destinationAccount, swiftCode, currency }) => {
     if (!amount || !destinationAccount || !swiftCode) {
