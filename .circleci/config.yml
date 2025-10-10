@@ -31,7 +31,7 @@ jobs:
 
   deploytoprod:
     machine:
-      - image: ubuntu-2204:current
+      image: ubuntu-2204:current
     resource_class: medium
     steps:
       - checkout
