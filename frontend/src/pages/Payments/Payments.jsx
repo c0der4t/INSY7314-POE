@@ -57,7 +57,7 @@ export default function Payments() {
         const validationError = validateClientSide({
       amount: formData.amount,
       destinationAccount: formData.destinationAccount,
-      swiftCode: formData.swiftCode,
+      swiftCode: formData.paymentProviderCode,
       currency: formData.currency
     });
     if (validationError) {
@@ -129,7 +129,8 @@ export default function Payments() {
   const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/; //only currencies we use
 
   const validateClientSide = ({ amount, destinationAccount, swiftCode, currency }) => {
-    if (!amount || !destinationAccount || !swiftCode) {
+
+    if (!amount || !destinationAccount || !swiftCode || !currency) {
       return 'Please fill in all required fields.';
     }
     if (!amountRegex.test(String(amount).trim())) {

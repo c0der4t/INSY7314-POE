@@ -50,19 +50,23 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    const { username, password, accNum  } = req.body;
+    
+    let { username, password, accountNumber } = req.body;
 
     username = String(username).trim();
     password = String(password);
-    accNum = String(accNum).trim();
+    accountNumber = String(accountNumber).trim();
 
-    if (!username || !password || !accNum) {
+    if (!username || !password || !accountNumber) {
         return res.status(400).json({ message: "All fields are required and must be strings" });
     }
 
     try {
+        
+        console.log("Attempting to find user with username:", username, "and accNum:", accountNumber);
 
-        const foundUser = await User.findOne({ username, accNum  });
+        const foundUser = await User.findOne({ username, accNum: accountNumber  });
+        console.log("Found user:", foundUser);
         if (!foundUser) return res.status(400).json({ message: 'Invalid credentials' });
 
         const matching = await bcrypt.compare(password, foundUser.password);
