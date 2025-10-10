@@ -38,9 +38,29 @@ export default function Payments() {
     });
   };
 
+  //Code Attribution
+  //this regex pattern for the amount was taken from atckOverflow
+  //https://stackoverflow.com/questions/7689817/javascript-regex-for-amount
+  //Matt Ball
+  //https://stackoverflow.com/users/139010/matt-ball
   const amountRegex = /^\d+(\.\d{1,2})?$/;
+  //Code Attribution
+  //This regex pattern for the account number was taken from StackOverflow
+  //https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns
+  //eddy
+  //https://stackoverflow.com/users/530911/eddy
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
+  //Code Attribution
+  //This regex pattern for the SWIFT code was taken from StackOverflow
+  //https://stackoverflow.com/questions/3028150/what-is-proper-regex-expression-for-swift-codes
+  //Klesun
+  //https://stackoverflow.com/users/2750743/klesun
   const swiftCodeRegex = /[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?/i; //going to check this
+  //Code Attribution
+  //This regex pattern for the different accepted currencies was taken from stackoverflow
+  //https://stackoverflow.com/questions/57663902/regex-with-iso-currency-and-string-match
+  //blhsing
+  //https://stackoverflow.com/users/6890912/blhsing
   const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/; //only currencies we use
 
   const validateClientSide = ({ amount, destinationAccount, swiftCode, currency }) => {

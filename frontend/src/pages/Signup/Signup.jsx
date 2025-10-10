@@ -22,9 +22,29 @@ export default function Signup() {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  //Code Attribution
+  //This regex pattern for the username was taken from StackOverflow
+  //https://stackoverflow.com/questions/9628879/javascript-regex-username-validation
+  //Jason McCreary
+  //https://stackoverflow.com/users/164998/jason-mccreary
   const usernameRegex = /^[a-zA-Z0-9]+$/;
+  //Code Attribution
+  //This regex pattern for an id number was taken from StackOverflow
+  //https://stackoverflow.com/questions/29383955/how-to-write-a-regex-javascript-for-an-id-validation
+  //Ishettyl
+  //https://stackoverflow.com/users/572827/lshettyl
   const idNumRegex = /^\d{6}-?\d{7}$/;
+  //Code Attribution
+  //This regex pattern for the account number was taken from StackOverflow
+  //https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns
+  //eddy
+  //https://stackoverflow.com/users/530911/eddy
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
+  //Code attribution
+  //This Regex pattern for the password was taken from StackOverflow
+  //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+  //Wiktor Stribizew
+  //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const validateClientSide = ({ username, idNum, accNum, password }) => {
