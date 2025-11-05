@@ -55,6 +55,11 @@ jobs:
             docker save stoinksfrontend:latest | ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
 
       - run:
+          name: Upload Admin Frontend Image
+          command: |
+            docker save stoinksadminfrontend:latest | ssh -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no root@168.119.165.47 'docker load'
+
+      - run:
           name: Upload Compose File
           command: scp -i ~/.ssh/id_rsa_47374ffef6a8f30b1771a847bc2cc51b -o StrictHostKeyChecking=no docker-compose.yml root@168.119.165.47:/tmp/stoinks
 
