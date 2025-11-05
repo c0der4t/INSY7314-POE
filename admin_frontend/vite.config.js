@@ -17,6 +17,6 @@ export default defineConfig({
     // },
     port: 5173,
     //https: false,
-    allowedHosts: ['stoinks.devpanda.work', 'localhost'],
+    allowedHosts: ['stoinksadmin.devpanda.work', 'localhost'],
   }
 })

@@ -16,3 +16,12 @@ services:
       - "5173:5173"
     depends_on:
       - api
+
+  adminfrontend:
+    image: stoinksadminfrontend:latest
+    build:
+      context: ./admin_frontend
+    ports:
+      - "5174:5173"
+    depends_on:
+      - api
