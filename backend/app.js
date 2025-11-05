@@ -10,6 +10,9 @@ import { securityMiddlewares } from './middlewares/securityMiddleware.js';
 import utilityRoutes from './routes/utilityRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import employeeAuthRoutes from './routes/employeeAuthRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
 
 
 dotenv.config();
@@ -36,11 +39,11 @@ const apiLimiter = rateLimit({
 
 
 
-const utilityRoutes = require('./routes/utilityRoutes.js');
-const authRoutes = require('./routes/authRoutes.js');
-const employeeAuthRoutes = require('./routes/employeeAuthRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const employeeRoutes = require('./routes/employeeRoutes');
+//const utilityRoutes = require('./routes/utilityRoutes.js');
+//const authRoutes = require('./routes/authRoutes.js');
+//const employeeAuthRoutes = require('./routes/employeeAuthRoutes.js');
+//const adminRoutes = require('./routes/adminRoutes.js');
+//const employeeRoutes = require('./routes/employeeRoutes.js');
 
 
 app.use('/v1', apiLimiter);

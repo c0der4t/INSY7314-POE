@@ -8,20 +8,21 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-mongo-sanitize": "^2.2.0",
-    "express-rate-limit": "^8.1.0",
+    "express-rate-limit": "^8.2.1",
     "fs": "^0.0.1-security",
     "helmet": "^8.1.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.17.1",
+    "mongoose": "^8.19.3",
     "nodemon": "^3.1.10",
     "xss-clean": "^0.1.4"
-  }
+  },
+  "keywords": [],
+  "description": ""
 }
