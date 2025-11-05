@@ -4,6 +4,7 @@ require('dotenv').config();
 //blacklist of tokens that we have invalidated
 const tokenBlacklist = new Set();
 
+//checks and verifies token is valid
 const verifyToken = (req, res, next) => {
     //stripping the header and getting the auth field from header
     const authHeader = req.headers['authorization'];

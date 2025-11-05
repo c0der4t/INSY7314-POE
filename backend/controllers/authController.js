@@ -6,6 +6,7 @@ const User = require('../models/userModel');
 require('dotenv').config();
 
 // Fixed: return the signed token
+//Generates and returns a jwt token
 const generateJwt = (user) => {
     return jwt.sign(
         { id: user._id, username: user.username }, // payload must be an object
@@ -34,7 +35,7 @@ const register = async (req, res) => {
       password: hashedPassword
     });
 
-        // return token
+        //issue token
         const token = generateJwt(createdUser);
 
         res.status(200).json({ 
@@ -72,6 +73,7 @@ const login = async (req, res) => {
         const matching = await bcrypt.compare(password, foundUser.password);
         if (!matching) return res.status(400).json({ message: 'Invalid credentials' });
 
+        //issue token
         const token = generateJwt(foundUser);
         res.status(200).json({ token });
 
@@ -81,6 +83,7 @@ const login = async (req, res) => {
 };
 
 
+//Token is blacklisted when user logs out
 const logout = async (req, res) => {
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.status(400).json({ message: 'No token provided' });
