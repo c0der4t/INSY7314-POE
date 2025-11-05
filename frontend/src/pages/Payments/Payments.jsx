@@ -1,18 +1,20 @@
+// based heavily on this: https://github.com/rudderz243/library_api/blob/main/frontend/src/pages/Dashboard.jsx
+import React, { useEffect, useState } from 'react';
 import './Payments.css';
-import React, { useState, useEffect } from 'react'; 
-import { createPayment as paymentApi } from '../../../services/apiService';
+import { createPayment as newPaymentApiCall } from '../../../services/apiService'; 
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 
 export default function Payments() {
-  
-  
+
+  const { token } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     amount: '',
     currency: 'USD',
     paymentProvider: 'SWIFT',
     destinationAccount: '',
-    swiftCode: '',
+    paymentProviderCode: '',
   });
 
     useEffect(() => {
@@ -45,6 +47,52 @@ export default function Payments() {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+            
+      try {
+        
+        const validationError = validateClientSide({
+      amount: formData.amount,
+      destinationAccount: formData.destinationAccount,
+      swiftCode: formData.paymentProviderCode,
+      currency: formData.currency
+    });
+    if (validationError) {
+      alert(validationError);
+      return;
+    }
+        
+        const res = await newPaymentApiCall({
+          paymentProviderCode: formData.paymentProviderCode,
+          destinationAccount: formData.destinationAccount,
+          paymentProvider: formData.paymentProvider,
+          currency: formData.currency,
+          amount: formData.amount
+        },token);
+  
+        if (res?.data?.paymentId) {
+
+          alert('✅ Payment successful!\nPayment ID: ' + res.data.paymentId);
+          navigate('/dashboard');
+
+        } else {
+          alert('Payment failed. Please check your information.');
+        }
+
+      } catch (error) {
+
+        console.error('Payment failed:', error.response?.data || error.message);
+        alert('Unexpected error occurred. Your session has likely expired.');
+        setError('An error occurred. Please try again later.');
+        navigate('/login');
+
+      }
+    };
+
+  
   const handleReset = () => {
     setFormData({
       amount: '',
@@ -81,7 +129,8 @@ export default function Payments() {
   const currencyRegex = /\b(?:USD|GBP|EUR|ZAR)\b/; //only currencies we use
 
   const validateClientSide = ({ amount, destinationAccount, swiftCode, currency }) => {
-    if (!amount || !destinationAccount || !swiftCode) {
+
+    if (!amount || !destinationAccount || !swiftCode || !currency) {
       return 'Please fill in all required fields.';
     }
     if (!amountRegex.test(String(amount).trim())) {
@@ -98,56 +147,7 @@ export default function Payments() {
     }
     return null;
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const validationError = validateClientSide({
-      amount: formData.amount,
-      destinationAccount: formData.destinationAccount,
-      swiftCode: formData.swiftCode,
-      currency: formData.currency
-    });
-    if (validationError) {
-      alert(validationError);
-      return;
-    }
-
-    const payload = {
-      amount: formData.amount,
-      currency: formData.currency,
-      provider: formData.paymentProvider,
-      accNum: formData.destinationAccount,
-      swiftCode: formData.swiftCode
-    };
-
-    try {
-      const token = localStorage.getItem('token');
-      const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-      let res;
-      try {
-        res = await paymentApi(payload, config);
-      } catch (err) {
-        if (err?.message?.includes('config') || err?.response?.status === 400 || err?.response?.status === 401) {
-          res = await paymentApi(payload);
-        } else {
-          throw err;
-        }
-      }
-
-      if (res?.data) {
-        alert('Payment submitted successfully (pending verification).');
-        handleReset();
-        //nav back to dash on success
-         navigate('/dashboard');
-      } else {
-        alert('Payment failed. Please try again.');
-      }
-    } catch (error) {
-      const msg = error.response?.data?.message || 'Payment failed. Please check your details or try again.';
-      alert(msg);
-    }
-  };
+  
 
   return (
     <div className="container">
@@ -190,15 +190,14 @@ export default function Payments() {
             onChange={handleInputChange}
             required
           />
-          
-
-          <label htmlFor="swiftCode">SWIFT Code:</label>
+          <br />
+          <label htmlFor="paymentProviderCode">SWIFT Code:</label>
           <input
-            id="swiftCode"
-            name="swiftCode"
+            id="paymentProviderCode"
+            name="paymentProviderCode"
             type="text"
-            placeholder="Enter SWIFT code (e.g. ABSAZAJJ)"
-            value={formData.swiftCode}
+            placeholder="Enter SWIFT code"
+            value={formData.paymentProviderCode}
             onChange={handleInputChange}
             required
           />

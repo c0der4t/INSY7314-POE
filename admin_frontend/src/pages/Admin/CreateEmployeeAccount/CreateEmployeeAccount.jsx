@@ -1,23 +1,20 @@
-import './Login.css';
-import piggyBank from '../../assets/Images/piggy-bank.png';
-import { Link, useNavigate } from 'react-router-dom';
+import styles from './CreateEmployeeAccount.module.css';
+import piggyBank from '../../../assets/Images/piggy-bank.png';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { loginUser as loginApi } from '../../../services/apiService';
-import { useAuth } from "../../context/AuthContext.jsx";
+import { registerUser as signupApi } from '../../../../services/apiService';
 
-export default function Login() {
-  
+export default function CreateAccount() {
   const [formData, setFormData] = useState({
     username: '',
-    accountNumber: '',
+    accNum: '',
     password: ''
   });
 
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   useEffect(() => {
-    setFormData({ username: '', accountNumber: '', password: '' });
+    setFormData({ username: '', accNum: '', password: '' });
   }, []);
   
     useEffect(() => {
@@ -46,22 +43,28 @@ export default function Login() {
   //https://stackoverflow.com/users/164998/jason-mccreary
   const usernameRegex = /^[a-zA-Z0-9]+$/;
   //Code Attribution
+  //This regex pattern for an id number was taken from StackOverflow
+  //https://stackoverflow.com/questions/29383955/how-to-write-a-regex-javascript-for-an-id-validation
+  //Ishettyl
+  //https://stackoverflow.com/users/572827/lshettyl
+  const idNumRegex = /^\d{6}-?\d{7}$/;
+  //Code Attribution
   //This regex pattern for the account number was taken from StackOverflow
   //https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns
   //eddy
   //https://stackoverflow.com/users/530911/eddy
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
   //Code attribution
-   //This Regex pattern for the password was taken from StackOverflow
-   //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-   //Wiktor Stribizew
-   //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
-   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  //This Regex pattern for the password was taken from StackOverflow
+  //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+  //Wiktor Stribizew
+  //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
-  const validateClientSide = ({ username, accountNumber, password }) => {
-    if (!username || !accountNumber || !password) return 'Please fill in all fields.';
+  const validateClientSide = ({ username, idNum, accNum, password }) => {
+    if (!username || !idNum || !accNum || !password) return 'Please fill in all fields.';
     if (!usernameRegex.test(username.trim())) return 'Invalid username format.';
-    if (!accNumRegex.test(accountNumber.trim())) return 'Invalid account number format.';
+    if (!accNumRegex.test(accNum.trim())) return 'Invalid account number format.';
     if (!passwordRegex.test(password.trim())) return 'Password must be 8+ chars with uppercase, lowercase, number & special char.';
     return null;
   };
@@ -76,30 +79,34 @@ export default function Login() {
     }
 
     try {
-      const res = await loginApi(formData);
+      const res = await signupApi(formData);
       if (res?.data?.token) {
-        login(res.data);
+        localStorage.setItem('token', res.data.token);
+        alert('Account Creation successful!');
         navigate('/dashboard');
       } else {
-        alert('Login failed. Please check your credentials.');
+        alert('Account Creationfailed. Please try again.');
       }
     } catch (error) {
-      console.error('Login failed:', error.response?.data || error.message);
-      alert('Login failed. Please check your credentials.');
+      console.error('Account Creation failed:', error.response?.data || error.message);
+      alert('Account Creation failed. Please check your details.');
     }
   };
 
+  const handleReset = () => {
+    setFormData({ username: '', accNum: '', password: '' });
+  };
+
   return (
-    <div className="container">
-      <h1 className="heading">Stoinks</h1>
+    <div className={styles["container-d"]}>
+      <h1 className={styles["heading"]}>Stoinks</h1>
       <img src={piggyBank} alt="Piggy Bank" />
-      <h2 className="sub-heading">Login</h2>
+      <h2 className="sub-heading">Create Employee Account</h2>
 
       <form onSubmit={handleSubmit} className="form">
         <label htmlFor="username">Username:</label>
         <input
           type="text"
-          id="username"
           name="username"
           placeholder="Enter your username"
           value={formData.username}
@@ -107,13 +114,13 @@ export default function Login() {
           required
         />
 
-        <label htmlFor="accountNumber">Account Number:</label>
+        <label htmlFor="accNum">Account Number:</label>
         <input
           type="text"
-          id="accountNumber"
-          name="accountNumber"
+          id="accNum"
+          name="accNum"
           placeholder="Enter your account number"
-          value={formData.accountNumber}
+          value={formData.accNum}
           onChange={handleInputChange}
           required
         />
@@ -129,12 +136,9 @@ export default function Login() {
           required
         />
 
-        <button type="submit" className="loginBtn">Login</button>
+        <button type="submit" className={styles["createBtn"]}>Create Employee</button>
       </form>
 
-      <Link to="/signup">
-        <button className="signupBtn">Signup</button>
-      </Link>
     </div>
   );
 }

@@ -9,6 +9,8 @@ import { connectToMongo } from './services/dbService.js';
 import { securityMiddlewares } from './middlewares/securityMiddleware.js';
 import utilityRoutes from './routes/utilityRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
+
 
 dotenv.config();
 
@@ -18,7 +20,7 @@ const app = express();
  //Raddy Z, 2022.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 2,
+  max: 5,
   message: {
     status: 429,
     message: "Too many requests from this IP, please try again later."
@@ -42,12 +44,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 
 
 app.use('/v1', apiLimiter);
-
-
-
-
 app.use(express.json());
-
 
 securityMiddlewares(app);
 
@@ -64,6 +61,7 @@ app.use('/v1/auth', authRoutes);
 app.use('/v1/auth-employee', employeeAuthRoutes);
 app.use('/v1/admin', adminRoutes);
 app.use('/v1/employee', employeeRoutes);
+app.use('/v1/payment', paymentRoutes);
 
 const port = process.env.API_PORT || 3001
 connectToMongo();

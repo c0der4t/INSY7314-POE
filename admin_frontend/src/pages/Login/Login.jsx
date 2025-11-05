@@ -79,7 +79,7 @@ export default function Login() {
       const res = await loginApi(formData);
       if (res?.data?.token) {
         login(res.data);
-        navigate('/dashboard');
+        navigate('/admindashboard');
       } else {
         alert('Login failed. Please check your credentials.');
       }
@@ -132,9 +132,6 @@ export default function Login() {
         <button type="submit" className="loginBtn">Login</button>
       </form>
 
-      <Link to="/signup">
-        <button className="signupBtn">Signup</button>
-      </Link>
     </div>
   );
 }

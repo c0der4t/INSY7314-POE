@@ -5,25 +5,19 @@ const User = require('../models/userModel');
 
 require('dotenv').config();
 
-const generateJwt = (username) => {
+// Fixed: return the signed token
+//Generates and returns a jwt token
+const generateJwt = (user) => {
     return jwt.sign(
-        { username }, // payload must be an object
+        { id: user._id, username: user.username }, // payload must be an object
         process.env.JWT_SECRET,
         { expiresIn: '1h' } // token valid for 1 hour
     );
 };
 
 const register = async (req, res) => {
+
     const { username, password, idNum, accNum } = req.body;
-
-    username = String(username).trim();
-    password = String(password);
-    idNum = String(idNum).trim();
-    accNum = String(accNum).trim();
-
-    if (!username || !password || !idNum || !accNum) {
-        return res.status(400).json({ message: "All fields are required and must be strings" });
-    }
 
     try {
         // check if user already exists
@@ -34,46 +28,62 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //create the user
-    await User.create({
+    const createdUser = await User.create({
       username,
       idNum,
       accNum,
       password: hashedPassword
     });
 
-        // return token
-        const token = generateJwt(username);
-        res.status(200).json({ token });
+        //issue token
+        const token = generateJwt(createdUser);
+
+        res.status(200).json({ 
+            token, 
+            user: { id: createdUser._id, username: createdUser.username } 
+        });
+
+
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
+
 };
 
 const login = async (req, res) => {
-    const { username, password, accNum  } = req.body;
+    
+    let { username, password, accountNumber } = req.body;
 
     username = String(username).trim();
     password = String(password);
-    accNum = String(accNum).trim();
+    accountNumber = String(accountNumber).trim();
 
-    if (!username || !password || !accNum) {
+    if (!username || !password || !accountNumber) {
         return res.status(400).json({ message: "All fields are required and must be strings" });
     }
 
     try {
-        const exists = await User.findOne({ username, accNum });
-        if (!exists) return res.status(400).json({ message: 'Invalid credentials' });
+        
+        console.log("Attempting to find user with username:", username, "and accNum:", accountNumber);
 
-        const matching = await bcrypt.compare(password, exists.password);
+        const foundUser = await User.findOne({ username, accNum: accountNumber  });
+        console.log("Found user:", foundUser);
+        if (!foundUser) return res.status(400).json({ message: 'Invalid credentials' });
+
+        const matching = await bcrypt.compare(password, foundUser.password);
         if (!matching) return res.status(400).json({ message: 'Invalid credentials' });
 
-        const token = generateJwt(username);
+        //issue token
+        const token = generateJwt(foundUser);
         res.status(200).json({ token });
+
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
 };
 
+
+//Token is blacklisted when user logs out
 const logout = async (req, res) => {
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.status(400).json({ message: 'No token provided' });
