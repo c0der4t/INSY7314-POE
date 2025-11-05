@@ -5,7 +5,6 @@ const User = require('../models/userModel');
 
 require('dotenv').config();
 
-// Fixed: return the signed token
 const generateJwt = (username) => {
     return jwt.sign(
         { username }, // payload must be an object

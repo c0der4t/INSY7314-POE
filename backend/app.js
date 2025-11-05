@@ -36,6 +36,9 @@ const apiLimiter = rateLimit({
 
 const utilityRoutes = require('./routes/utilityRoutes.js');
 const authRoutes = require('./routes/authRoutes.js');
+const employeeAuthRoutes = require('./routes/employeeAuthRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 
 
 app.use('/v1', apiLimiter);
@@ -58,6 +61,9 @@ app.use((req, res, next) => {
 
 app.use('/v1/utility', utilityRoutes);
 app.use('/v1/auth', authRoutes);
+app.use('/v1/auth-employee', employeeAuthRoutes);
+app.use('/v1/admin', adminRoutes);
+app.use('/v1/employee', employeeRoutes);
 
 const port = process.env.API_PORT || 3001
 connectToMongo();
