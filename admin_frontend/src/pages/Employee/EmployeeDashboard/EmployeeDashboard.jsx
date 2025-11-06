@@ -36,7 +36,7 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <h1 className="heading">Stoinks Admin Dashboard</h1>
+      <h1 className="heading">Stoinks Employee Dashboard</h1>
 
       <div>
         <button onClick={handlePendingPayments}>Pending Payments</button>

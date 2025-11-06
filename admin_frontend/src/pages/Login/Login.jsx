@@ -2,11 +2,10 @@ import './Login.css';
 import piggyBank from '../../assets/Images/piggy-bank.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { loginUser as loginApi } from '../../../services/apiService';
+import { loginEmployee as loginApi } from '../../../services/apiService';
 import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {
-  
   const [formData, setFormData] = useState({
     username: '',
     accountNumber: '',
@@ -19,44 +18,27 @@ export default function Login() {
   useEffect(() => {
     setFormData({ username: '', accountNumber: '', password: '' });
   }, []);
-  
-    useEffect(() => {
-      try {
 
-        //alert('Frame-buster check running!');
-        
-        if (window.top !== window.self) {
-          alert('This page cannot be displayed inside a frame.');
-          window.top.location.href = window.location.href;
-        }
-      } catch (err) {
+  // Frame busting check
+  useEffect(() => {
+    try {
+      if (window.top !== window.self) {
         alert('This page cannot be displayed inside a frame.');
+        window.top.location.href = window.location.href;
       }
-    }, []);
-
+    } catch {
+      alert('This page cannot be displayed inside a frame.');
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  //Code Attribution
-  //This regex pattern for the username was taken from StackOverflow
-  //https://stackoverflow.com/questions/9628879/javascript-regex-username-validation
-  //Jason McCreary
-  //https://stackoverflow.com/users/164998/jason-mccreary
+  // Regex validations
   const usernameRegex = /^[a-zA-Z0-9]+$/;
-  //Code Attribution
-  //This regex pattern for the account number was taken from StackOverflow
-  //https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns
-  //eddy
-  //https://stackoverflow.com/users/530911/eddy
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
-  //Code attribution
-   //This Regex pattern for the password was taken from StackOverflow
-   //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-   //Wiktor Stribizew
-   //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
-   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
   const validateClientSide = ({ username, accountNumber, password }) => {
     if (!username || !accountNumber || !password) return 'Please fill in all fields.';
@@ -77,9 +59,22 @@ export default function Login() {
 
     try {
       const res = await loginApi(formData);
+
       if (res?.data?.token) {
+        const { token, role } = res.data;
+
+        // Save auth info in context
         login(res.data);
-        navigate('/admindashboard');
+
+        // Redirect based on role
+        if (role === 'ADMIN') {
+          navigate('/admindashboard');
+        } else if (role === 'EMPLOYEE') {
+          navigate('/employeedashboard');
+        } else {
+          // Default route if role not recognized
+          navigate('/');
+        }
       } else {
         alert('Login failed. Please check your credentials.');
       }
@@ -131,7 +126,6 @@ export default function Login() {
 
         <button type="submit" className="loginBtn">Login</button>
       </form>
-
     </div>
   );
 }

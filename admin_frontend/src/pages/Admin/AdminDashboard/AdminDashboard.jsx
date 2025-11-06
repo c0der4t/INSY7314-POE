@@ -19,6 +19,8 @@ export default function Dashboard() {
       } catch (err) {
         alert('This page cannot be displayed inside a frame.');
       }
+
+      
     }, []);
 
 
