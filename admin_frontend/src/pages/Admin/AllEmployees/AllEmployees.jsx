@@ -1,12 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './AllEmployees.module.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAllEmployees } from '../services/apiService';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [employees, setEmployees] = useState([]);
 
-  // Frame-buster
   useEffect(() => {
+    // Frame-buster
     try {
       if (window.top !== window.self) {
         alert('This page cannot be displayed inside a frame.');
@@ -15,16 +17,20 @@ export default function Dashboard() {
     } catch (err) {
       alert('This page cannot be displayed inside a frame.');
     }
-  }, []);
 
-  // Dummy employees list
-  const employees = [
-    { userName: 'PP001', accountNumber: '123-456-789' },
-    { userName: 'PP002', accountNumber: '234-567-890' },
-    { userName: 'PP003', accountNumber: '345-678-901' },
-    { userName: 'PP004', accountNumber: '456-789-012' },
-    { userName: 'PP005', accountNumber: '567-890-123' },
-  ];
+    // Fetch employees
+    const fetchEmployees = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await getAllEmployees(token);
+        setEmployees(response.data);
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   const handleDelete = (accountNumber) => {
     alert(`Employee ${accountNumber} deleted`);

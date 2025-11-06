@@ -2,69 +2,41 @@ import styles from './CreateEmployeeAccount.module.css';
 import piggyBank from '../../../assets/Images/piggy-bank.png';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { registerUser as signupApi } from '../../../../services/apiService';
+import { createEmployee } from '../../../../services/apiService';
 
 export default function CreateAccount() {
   const [formData, setFormData] = useState({
-    username: '',
-    accNum: '',
+    userName: '',
+    accountNumber: '',
     password: ''
   });
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setFormData({ username: '', accNum: '', password: '' });
-  }, []);
-  
-    useEffect(() => {
-      try {
-
-        //alert('Frame-buster check running!');
-        
-        if (window.top !== window.self) {
-          alert('This page cannot be displayed inside a frame.');
-          window.top.location.href = window.location.href;
-        }
-      } catch (err) {
+    // Frame-buster
+    try {
+      if (window.top !== window.self) {
         alert('This page cannot be displayed inside a frame.');
+        window.top.location.href = window.location.href;
       }
-    }, []);
-
+    } catch {
+      alert('This page cannot be displayed inside a frame.');
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  //Code Attribution
-  //This regex pattern for the username was taken from StackOverflow
-  //https://stackoverflow.com/questions/9628879/javascript-regex-username-validation
-  //Jason McCreary
-  //https://stackoverflow.com/users/164998/jason-mccreary
   const usernameRegex = /^[a-zA-Z0-9]+$/;
-  //Code Attribution
-  //This regex pattern for an id number was taken from StackOverflow
-  //https://stackoverflow.com/questions/29383955/how-to-write-a-regex-javascript-for-an-id-validation
-  //Ishettyl
-  //https://stackoverflow.com/users/572827/lshettyl
-  const idNumRegex = /^\d{6}-?\d{7}$/;
-  //Code Attribution
-  //This regex pattern for the account number was taken from StackOverflow
-  //https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns
-  //eddy
-  //https://stackoverflow.com/users/530911/eddy
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
-  //Code attribution
-  //This Regex pattern for the password was taken from StackOverflow
-  //https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-  //Wiktor Stribizew
-  //https://stackoverflow.com/users/3832970/wiktor-stribi%c5%bcew
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
-  const validateClientSide = ({ username, idNum, accNum, password }) => {
-    if (!username || !idNum || !accNum || !password) return 'Please fill in all fields.';
-    if (!usernameRegex.test(username.trim())) return 'Invalid username format.';
-    if (!accNumRegex.test(accNum.trim())) return 'Invalid account number format.';
+  const validateClientSide = ({ userName, accountNumber, password }) => {
+    if (!userName || !accountNumber || !password) return 'Please fill in all fields.';
+    if (!usernameRegex.test(userName.trim())) return 'Invalid username format.';
+    if (!accNumRegex.test(accountNumber.trim())) return 'Invalid account number format.';
     if (!passwordRegex.test(password.trim())) return 'Password must be 8+ chars with uppercase, lowercase, number & special char.';
     return null;
   };
@@ -79,22 +51,20 @@ export default function CreateAccount() {
     }
 
     try {
-      const res = await signupApi(formData);
-      if (res?.data?.token) {
-        localStorage.setItem('token', res.data.token);
-        alert('Account Creation successful!');
+      const token = localStorage.getItem('token'); // admin token
+
+      const res = await createEmployee(formData, token);
+
+      if (res.status === 201 || res.status === 200) {
+        alert('Employee created successfully!');
         navigate('/dashboard');
       } else {
-        alert('Account Creationfailed. Please try again.');
+        alert('Failed to create employee. Please try again.');
       }
     } catch (error) {
-      console.error('Account Creation failed:', error.response?.data || error.message);
-      alert('Account Creation failed. Please check your details.');
+      console.error('Error creating employee:', error.response?.data || error.message);
+      alert('Failed to create employee. Please check your details or token.');
     }
-  };
-
-  const handleReset = () => {
-    setFormData({ username: '', accNum: '', password: '' });
   };
 
   return (
@@ -104,23 +74,22 @@ export default function CreateAccount() {
       <h2 className="sub-heading">Create Employee Account</h2>
 
       <form onSubmit={handleSubmit} className="form">
-        <label htmlFor="username">Username:</label>
+        <label htmlFor="userName">Username:</label>
         <input
           type="text"
-          name="username"
-          placeholder="Enter your username"
-          value={formData.username}
+          name="userName"
+          placeholder="Enter username"
+          value={formData.userName}
           onChange={handleInputChange}
           required
         />
 
-        <label htmlFor="accNum">Account Number:</label>
+        <label htmlFor="accountNumber">Account Number:</label>
         <input
           type="text"
-          id="accNum"
-          name="accNum"
-          placeholder="Enter your account number"
-          value={formData.accNum}
+          name="accountNumber"
+          placeholder="Enter account number"
+          value={formData.accountNumber}
           onChange={handleInputChange}
           required
         />
@@ -128,9 +97,8 @@ export default function CreateAccount() {
         <label htmlFor="password">Password:</label>
         <input
           type="password"
-          id="password"
           name="password"
-          placeholder="Enter your password"
+          placeholder="Enter password"
           value={formData.password}
           onChange={handleInputChange}
           required
@@ -138,7 +106,6 @@ export default function CreateAccount() {
 
         <button type="submit" className={styles["createBtn"]}>Create Employee</button>
       </form>
-
     </div>
   );
 }
