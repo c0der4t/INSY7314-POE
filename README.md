@@ -70,6 +70,9 @@ These measures collectively ensure that user data, transactions, and authenticat
 
 ## Change Log
 
+Feedback: Previouse brute force prevention was insuficent
+Change: Added a Rate limiter that bans IP adresses afre too many consecutaive failed login attempts
+
 
 ## References
 
