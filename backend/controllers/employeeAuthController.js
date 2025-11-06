@@ -13,14 +13,15 @@ const signStaffJwt = (emp) => jwt.sign(
 
 const loginEmployee = async (req, res) => {
   const username = String(req.body.username || '').trim();
+  const accNum = String(req.body.accNum ?? req.body.accountNumber ?? '').trim();
   const password = String(req.body.password || '');
 
   if (!username || !password) {
-    return res.status(400).json({ message: 'All fields are required and must be strings' });
+    return res.status(400).json({ message: 'Make sure you fill out all fields.' });
   }
 
   try {
-    const emp = await Employee.findOne({ username });
+    const emp = await Employee.findOne({ username, accountNum: accNum }).select('+password');
     if (!emp) return res.status(400).json({ message: 'Invalid credentials' });
 
     const ok = await bcrypt.compare(password, emp.password);

@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.get('/employees',  requireStaffAuth, requireRole('ADMIN'), listEmployees);
 router.post('/employees', requireStaffAuth, requireRole('ADMIN'), validateInputs, createEmployee);
-router.delete('/employees/:id', requireStaffAuth, requireRole('ADMIN'), deleteEmployee);
+router.delete('/employees/:accNum', requireStaffAuth, requireRole('ADMIN'), deleteEmployee);
 
 module.exports = router;
