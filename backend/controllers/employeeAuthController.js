@@ -7,6 +7,8 @@ const Employee = require('../models/employeeModel');
 const ONE_YEAR_MS = Math.floor(365.25 * 24 * 60 * 60 * 1000);
 
 // Rate limiter: max 10 failed attempts per IP over 1 year
+// Rate limiting - max= number of requests, winodwsMs= period of time resuts are made in
+ //Raddy Z, 2022.
 const BruteForceIPLimiter = rateLimit({
   windowMs: ONE_YEAR_MS,
   max: 10,
@@ -59,3 +61,6 @@ const loginEmployee = async (req, res) => {
 };
 
 module.exports = { loginEmployee };
+
+//references:
+  //Raddy Z, 2022. NodeJs Limiting Network Traffic - Express, Express Rate Limit. [video] YouTube. Available at: https://www.youtube.com/watch?v=VZZLiVccwKk&t=213s[Accessed 10 October 2025].
