@@ -51,36 +51,34 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    
-    let { username, password, accountNumber } = req.body;
+  let { username, password, accNum, accountNumber } = req.body;
 
-    username = String(username).trim();
-    password = String(password);
-    accountNumber = String(accountNumber).trim();
+  username = String(username || '').trim();
+  password = String(password || '');
+  const acc = String((accNum ?? accountNumber) || '').trim(); // accept either accNum or account number
 
-    if (!username || !password || !accountNumber) {
-        return res.status(400).json({ message: "All fields are required and must be strings" });
-    }
+  if (!username || !password || !acc) {
+    return res.status(400).json({ message: "All fields are required and must be strings" });
+  }
 
-    try {
-        
-        console.log("Attempting to find user with username:", username, "and accNum:", accountNumber);
+  try {
+    console.log("Attempting to find user with username:", username, "and accNum:", acc);
 
-        const foundUser = await User.findOne({ username, accNum: accountNumber  });
-        console.log("Found user:", foundUser);
-        if (!foundUser) return res.status(400).json({ message: 'Invalid credentials' });
+    const foundUser = await User.findOne({ username, accNum: acc });
+    console.log("Found user:", !!foundUser);
 
-        const matching = await bcrypt.compare(password, foundUser.password);
-        if (!matching) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!foundUser) return res.status(400).json({ message: 'Invalid credentials' });
 
-        //issue token
-        const token = generateJwt(foundUser);
-        res.status(200).json({ token });
+    const matching = await bcrypt.compare(password, foundUser.password);
+    if (!matching) return res.status(400).json({ message: 'Invalid credentials' });
 
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+    const token = generateJwt(foundUser);
+    return res.status(200).json({ token });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
 };
+
 
 
 //Token is blacklisted when user logs out

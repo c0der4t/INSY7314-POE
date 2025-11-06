@@ -10,6 +10,9 @@ import { securityMiddlewares } from './middlewares/securityMiddleware.js';
 import utilityRoutes from './routes/utilityRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import employeeAuthRoutes from './routes/employeeAuthRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
 
 
 dotenv.config();
@@ -20,7 +23,7 @@ const app = express();
  //Raddy Z, 2022.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 100,
   message: {
     status: 429,
     message: "Too many requests from this IP, please try again later."
@@ -34,6 +37,13 @@ const apiLimiter = rateLimit({
 //     cert: fs.readFileSync('./certs/localhost+1.pem'),
 // }
 
+
+
+//const utilityRoutes = require('./routes/utilityRoutes.js');
+//const authRoutes = require('./routes/authRoutes.js');
+//const employeeAuthRoutes = require('./routes/employeeAuthRoutes.js');
+//const adminRoutes = require('./routes/adminRoutes.js');
+//const employeeRoutes = require('./routes/employeeRoutes.js');
 
 
 app.use('/v1', apiLimiter);
@@ -51,6 +61,9 @@ app.use((req, res, next) => {
 
 app.use('/v1/utility', utilityRoutes);
 app.use('/v1/auth', authRoutes);
+app.use('/v1/auth-employee', employeeAuthRoutes);
+app.use('/v1/admin', adminRoutes);
+app.use('/v1/employee', employeeRoutes);
 app.use('/v1/payment', paymentRoutes);
 
 const port = process.env.API_PORT || 3001
