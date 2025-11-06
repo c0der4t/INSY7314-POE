@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './PendingPayments.module.css';
 import React, { useEffect, useState } from 'react';
-import { getPendingPayments } from '../../../../services/apiService';
+import { getPendingPayments, decidePayment as apiDecidePayment } from '../../../../services/apiService';
 
 export default function PendingPayments() {
   const navigate = useNavigate();
@@ -10,8 +10,6 @@ export default function PendingPayments() {
 
   // Frame-buster
   useEffect(() => {
-
-     // Frame-buster: (primary protection should be CSP / X-Frame-Options headers)
     try {
       if (window.top !== window.self) {
         alert('This page cannot be displayed inside a frame.');
@@ -22,11 +20,12 @@ export default function PendingPayments() {
     }
   }, []);
 
-  // Fetch pending payments from API
+  // Fetch pending payments
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await getPendingPayments();
+        const token = localStorage.getItem('token'); 
+        const response = await getPendingPayments(token);
         setPayments(response.data);
       } catch (error) {
         console.error('Error fetching pending payments:', error);
@@ -39,13 +38,22 @@ export default function PendingPayments() {
     fetchPayments();
   }, []);
 
-  const handleApprove = (transactionHash) => {
-    alert(`Payment ${transactionHash} approved`);
-  };
+  // Handle payment decision
+  const handleDecision = async (id, decision) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await apiDecidePayment(id, decision, token);
 
-  const handleReject = (transactionHash) => {
-    alert(`Payment ${transactionHash} rejected`);
-  };
+    // Remove the approved/denied payment from the UI
+    setPayments((prev) => prev.filter((p) => p._id !== id));
+
+    alert(`Payment ${decision.toLowerCase()}`);
+  } catch (error) {
+    console.error(`Error ${decision.toLowerCase()} payment:`, error);
+    alert(`Failed to ${decision.toLowerCase()} payment.`);
+  }
+};
+
 
   if (loading) return <p>Loading pending payments...</p>;
 
@@ -65,15 +73,15 @@ export default function PendingPayments() {
             <p><strong>Created At:</strong> {new Date(payment.createdAt).toLocaleString()}</p>
 
             <div className="payment-actions">
-              <button
+             <button
                 className={styles["acceptBtn"]}
-                onClick={() => handleApprove(payment.transactionHash)}
+                onClick={() => handleDecision(payment._id, 'APPROVED')}
               >
                 Approve
               </button>
               <button
                 className={styles["rejectBtn"]}
-                onClick={() => handleReject(payment.transactionHash)}
+                onClick={() => handleDecision(payment._id, 'DENIED')}
               >
                 Reject
               </button>
@@ -84,4 +92,3 @@ export default function PendingPayments() {
     </div>
   );
 }
-

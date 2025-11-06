@@ -3,9 +3,6 @@ import axios from '../interfaces/axiosInstance'
 
 //AUTH ENDPOINTS
 
-// login user and return the token if successful
-export const loginUser = (payload) => axios.post('/auth/login', payload);
-
 //employee login
 export const loginEmployee = (credentials) => axios.post('/auth-employee/login', credentials);
 
@@ -15,7 +12,9 @@ export const logoutUser = () => axios.get('/auth/logout');
 
 // PAYMENT ENDPOINTS
 
-//endpoints for employees (if used)
+//endpoints for employees
+
+
 export const getPendingPayments = (token) =>
   axios.get('/employee/payments/pending', {
     headers: {
@@ -23,8 +22,20 @@ export const getPendingPayments = (token) =>
     },
   });
 
+  export const getAllPayments = (token) =>
+  axios.get('/employee/payments/history', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 //employee verifies a payment
-export const verifyPayment = (id) => axios.post(`/employee/verify/${id}`);
+export const decidePayment = (id, decision, token) =>
+  axios.put(`/employee/payments/${id}`, { decision }, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
 
 //EMPLOYEE MANAGEMENT ENDPOINTS
@@ -48,8 +59,8 @@ export const createEmployee = (employeeData, token) =>
   });
 
 //delete an employee by ID
-export const deleteEmployee = (id, token) =>
-  axios.delete(`/admin/employees/${id}`, {
+export const deleteEmployee = (accNum, token) =>
+  axios.delete(`/admin/employees/${accNum}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
