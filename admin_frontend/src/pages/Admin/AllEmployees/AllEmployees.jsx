@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './AllEmployees.module.css';
 import React, { useEffect, useState } from 'react';
-import { getAllEmployees } from '../services/apiService';
+import { getAllEmployees } from '../../../../services/apiService';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export default function Dashboard() {
 
       {employees.map((employee) => (
         <div key={employee.accountNumber} className={styles["employee-item"]}>
-          <p><strong>Name:</strong> {employee.userName}</p>
+          <p><strong>Name:</strong> {employee.username}</p>
           <p><strong>Account Number:</strong> {employee.accountNumber}</p>
 
           <div className="actions">

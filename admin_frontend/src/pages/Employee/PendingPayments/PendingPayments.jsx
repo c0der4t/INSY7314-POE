@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './PendingPayments.module.css';
 import React, { useEffect, useState } from 'react';
-import { getPendingPayments } from '../../../services/employeeService'; // adjust path if needed
+import { getPendingPayments } from '../../../../services/apiService';
 
 export default function PendingPayments() {
   const navigate = useNavigate();

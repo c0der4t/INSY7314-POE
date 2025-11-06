@@ -6,8 +6,9 @@ import { createEmployee } from '../../../../services/apiService';
 
 export default function CreateAccount() {
   const [formData, setFormData] = useState({
-    userName: '',
-    accountNumber: '',
+    username: '',
+    email: '',
+    accountnumber: '',
     password: ''
   });
 
@@ -32,12 +33,14 @@ export default function CreateAccount() {
   const usernameRegex = /^[a-zA-Z0-9]+$/;
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
-  const validateClientSide = ({ userName, accountNumber, password }) => {
-    if (!userName || !accountNumber || !password) return 'Please fill in all fields.';
-    if (!usernameRegex.test(userName.trim())) return 'Invalid username format.';
-    if (!accNumRegex.test(accountNumber.trim())) return 'Invalid account number format.';
+  const validateClientSide = ({ username, accountnumber, password, email }) => {
+    if (!username || !accountnumber || !password || !email) return 'Please fill in all fields.';
+    if (!usernameRegex.test(username.trim())) return 'Invalid username format.';
+    if (!accNumRegex.test(accountnumber.trim())) return 'Invalid account number format.';
     if (!passwordRegex.test(password.trim())) return 'Password must be 8+ chars with uppercase, lowercase, number & special char.';
+    if (!emailRegex.test(email.trim())) return 'Invalid email format.';
     return null;
   };
 
@@ -52,7 +55,6 @@ export default function CreateAccount() {
 
     try {
       const token = localStorage.getItem('token'); // admin token
-
       const res = await createEmployee(formData, token);
 
       if (res.status === 201 || res.status === 200) {
@@ -74,22 +76,32 @@ export default function CreateAccount() {
       <h2 className="sub-heading">Create Employee Account</h2>
 
       <form onSubmit={handleSubmit} className="form">
-        <label htmlFor="userName">Username:</label>
+        <label htmlFor="username">Username:</label>
         <input
           type="text"
-          name="userName"
+          name="username"
           placeholder="Enter username"
-          value={formData.userName}
+          value={formData.username}
           onChange={handleInputChange}
           required
         />
 
-        <label htmlFor="accountNumber">Account Number:</label>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+        />
+
+        <label htmlFor="accountnumber">Account Number:</label>
         <input
           type="text"
-          name="accountNumber"
+          name="accountnumber"
           placeholder="Enter account number"
-          value={formData.accountNumber}
+          value={formData.accountnumber}
           onChange={handleInputChange}
           required
         />

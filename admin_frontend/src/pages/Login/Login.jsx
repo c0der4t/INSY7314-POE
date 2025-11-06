@@ -2,7 +2,7 @@ import './Login.css';
 import piggyBank from '../../assets/Images/piggy-bank.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { loginUser as loginApi } from '../../../services/apiService';
+import { loginEmployee as loginApi } from '../../../services/apiService';
 import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {

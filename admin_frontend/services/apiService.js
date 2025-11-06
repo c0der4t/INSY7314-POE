@@ -7,7 +7,7 @@ import axios from '../interfaces/axiosInstance'
 export const loginUser = (payload) => axios.post('/auth/login', payload);
 
 //employee login
-export const loginEmployee = (credentials) => axios.post('/staff/login', credentials);
+export const loginEmployee = (credentials) => axios.post('/auth-employee/login', credentials);
 
 // logout user
 export const logoutUser = () => axios.get('/auth/logout');
