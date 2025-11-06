@@ -73,29 +73,31 @@ These measures collectively ensure that user data, transactions, and authenticat
 
 ## References
 
-- Khatri, S. (2017). *Answer to “Passing headers with axios POST request”*. [Online]. Available at: https://stackoverflow.com/a/44617848/11914974 [Accessed 10 October 2025].
-
-- McCreary, J. *Username validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/9628879/javascript-regex-username-validation [Accessed 10 October 2025].
-
-- Stribizew, W. *Password validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a [Accessed 10 October 2025].
-
-- Ishettyl. *ID number validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/29383955/how-to-write-a-regex-javascript-for-an-id-validation [Accessed 10 October 2025].
-
-- Eddy. *Account number validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns [Accessed 10 October 2025].
-
 - Ball, M. *Amount validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/7689817/javascript-regex-for-amount [Accessed 10 October 2025].
 
 - blhsing. *ISO currency regex*. StackOverflow. Available at: https://stackoverflow.com/questions/57663902/regex-with-iso-currency-and-string-match [Accessed 10 October 2025].
 
+- Cow. *Email address regex*. StackOverflow. Available at: https://stackoverflow.com/questions/50330109/simple-regex-pattern-for-email [Accessed 10 October 2025].
+
+- Eddy. *Account number validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/22749891/regex-validate-an-account-number-with-two-different-patterns [Accessed 10 October 2025].
+
+- Ishettyl. *ID number validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/29383955/how-to-write-a-regex-javascript-for-an-id-validation [Accessed 10 October 2025].
+
+- Khatri, S. (2017). *Answer to “Passing headers with axios POST request”*. [Online]. Available at: https://stackoverflow.com/a/44617848/11914974 [Accessed 10 October 2025].
+
 - Klesun. *SWIFT code regex*. StackOverflow. Available at: https://stackoverflow.com/questions/3028150/what-is-proper-regex-expression-for-swift-codes [Accessed 10 October 2025].
 
-- Cow. *Email address regex*. StackOverflow. Available at: https://stackoverflow.com/questions/50330109/simple-regex-pattern-for-email [Accessed 10 October 2025].
+- McCreary, J. *Username validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/9628879/javascript-regex-username-validation [Accessed 10 October 2025].
+
+- Owasp (n.d.). *Clickjacking Defense - OWASP Cheat Sheet Series*. [online] cheatsheetseries.owasp.org. Available at: https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html.
+
+- Raddy Z. (2022). *NodeJs Limiting Network Traffic - Express, Express Rate Limit* [video]. YouTube. Available at: https://www.youtube.com/watch?v=VZZLiVccwKk&t=213s [Accessed 10 October 2025].
 
 - React protected routes in 4 minutes (2024). [Online]. Available at: https://www.youtube.com/watch?v=pyfwQUc5Ssk [Accessed 10 October 2025].
 
 - SnykSec (2025). *Validating and Sanitizing Data in JavaScript* [video]. Available at: https://www.youtube.com/shorts/La8_1AqVyUE [Accessed 10 October 2025].
 
-- Raddy Z. (2022). *NodeJs Limiting Network Traffic - Express, Express Rate Limit* [video]. YouTube. Available at: https://www.youtube.com/watch?v=VZZLiVccwKk&t=213s [Accessed 10 October 2025].
+- Stribizew, W. *Password validation regex*. StackOverflow. Available at: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a [Accessed 10 October 2025].
 
 ## YouTube Videos
 
