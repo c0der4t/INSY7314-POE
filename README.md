@@ -70,8 +70,8 @@ These measures collectively ensure that user data, transactions, and authenticat
 
 ## Change Log
 
-Feedback: Previouse brute force prevention was insuficent
-Change: Added a rate limiter that bans IP adresses afre too many consecutaive failed login attempts for both the user protal and employee/admin portal
+Feedback: Previous brute-force prevention was insufficient.
+Change: Added a rate limiter that bans IP addresses after too many consecutive failed login attempts for both the user portal and the employee/admin portal.
 
 
 ## References
@@ -105,6 +105,7 @@ Change: Added a rate limiter that bans IP adresses afre too many consecutaive fa
 ## YouTube Videos
 
 Part 2 demonstration video:
+https://youtu.be/SJdYz6ptzPc
 
 Part 3 demonstration video:
 
