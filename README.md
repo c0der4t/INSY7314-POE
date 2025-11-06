@@ -32,17 +32,21 @@ Users can:
 - Create an account  
 - Log in  
 - Create payment requests  
+- Log out 
 
 ### Employee/Admin Portal
 Employees can:
 - Log in  
 - Approve or reject pending transactions  
 - View the history of all accepted or rejected transactions  
+- Log out 
 
 Admins can:
+- Log in  
 - Create new employees  
 - View all employees  
 - Delete employees  
+- Log out 
 
 ## Features
 - Secure login and authentication for users and employees  
