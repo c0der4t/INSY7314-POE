@@ -16,7 +16,12 @@ export const logoutUser = () => axios.get('/auth/logout');
 // PAYMENT ENDPOINTS
 
 //endpoints for employees (if used)
-export const getPendingPayments = () => axios.get('/employee/pending');
+export const getPendingPayments = (token) =>
+  axios.get('/employee/payments/pending', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
 //employee verifies a payment
 export const verifyPayment = (id) => axios.post(`/employee/verify/${id}`);
@@ -34,6 +39,7 @@ export const getAllEmployees = (token) =>
 
 //create new employee
 export const createEmployee = (employeeData, token) =>
+  
   axios.post('/admin/employees', employeeData, {
     headers: {
       Authorization: `Bearer ${token}`,

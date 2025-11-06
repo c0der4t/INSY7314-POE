@@ -8,8 +8,9 @@ export default function CreateAccount() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    accountnumber: '',
-    password: ''
+    accNum: '', 
+    password: '',
+    role: 'EMPLOYEE', // default role
   });
 
   const navigate = useNavigate();
@@ -30,15 +31,16 @@ export default function CreateAccount() {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // Validation regex
   const usernameRegex = /^[a-zA-Z0-9]+$/;
   const accNumRegex = /^([0-9]{11}|[0-9]{2}-[0-9]{3}-[0-9]{6})$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const validateClientSide = ({ username, accountnumber, password, email }) => {
-    if (!username || !accountnumber || !password || !email) return 'Please fill in all fields.';
+  const validateClientSide = ({ username, accNum, password, email }) => {
+    if (!username || !accNum || !password || !email) return 'Please fill in all fields.';
     if (!usernameRegex.test(username.trim())) return 'Invalid username format.';
-    if (!accNumRegex.test(accountnumber.trim())) return 'Invalid account number format.';
+    if (!accNumRegex.test(accNum.trim())) return 'Invalid account number format.';
     if (!passwordRegex.test(password.trim())) return 'Password must be 8+ chars with uppercase, lowercase, number & special char.';
     if (!emailRegex.test(email.trim())) return 'Invalid email format.';
     return null;
@@ -46,6 +48,8 @@ export default function CreateAccount() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log('Sending employee data:', formData); // log what is being sent
 
     const validationError = validateClientSide(formData);
     if (validationError) {
@@ -59,13 +63,12 @@ export default function CreateAccount() {
 
       if (res.status === 201 || res.status === 200) {
         alert('Employee created successfully!');
-        navigate('/dashboard');
       } else {
         alert('Failed to create employee. Please try again.');
       }
     } catch (error) {
       console.error('Error creating employee:', error.response?.data || error.message);
-      alert('Failed to create employee. Please check your details or token.');
+      alert(error.response?.data?.message || 'Failed to create employee. Please check your details or token.');
     }
   };
 
@@ -96,12 +99,12 @@ export default function CreateAccount() {
           required
         />
 
-        <label htmlFor="accountnumber">Account Number:</label>
+        <label htmlFor="accNum">Account Number:</label>
         <input
           type="text"
-          name="accountnumber"
+          name="accNum" // updated to match backend
           placeholder="Enter account number"
-          value={formData.accountnumber}
+          value={formData.accNum}
           onChange={handleInputChange}
           required
         />
@@ -115,6 +118,7 @@ export default function CreateAccount() {
           onChange={handleInputChange}
           required
         />
+
 
         <button type="submit" className={styles["createBtn"]}>Create Employee</button>
       </form>
