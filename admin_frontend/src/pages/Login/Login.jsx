@@ -86,9 +86,9 @@ export default function Login() {
 
   return (
     <div className="container">
-      <h1 className="heading">Stoinks</h1>
+      <h1 className="heading">Stoinks Employee Portal</h1>
       <img src={piggyBank} alt="Piggy Bank" />
-      <h2 className="sub-heading">Login</h2>
+      <h2 className="sub-heading">Employee Login</h2>
 
       <form onSubmit={handleSubmit} className="form">
         <label htmlFor="username">Username:</label>
