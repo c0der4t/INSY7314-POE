@@ -107,5 +107,6 @@ Change: Added a rate limiter that bans IP addresses after too many consecutive f
 Part 2 demonstration video:
 https://youtu.be/SJdYz6ptzPc
 
-Part 3 demonstration video:
+Part 3 demonstration video::
+https://youtu.be/vJsNc4KfYlI
 
