@@ -104,9 +104,33 @@ Change: Added a rate limiter that bans IP addresses after too many consecutive f
 
 ## YouTube Videos
 
-Part 2 demonstration video:
-https://youtu.be/SJdYz6ptzPc
+## Part 2 Demonstration Video
+**Full Video:** [Watch on YouTube](https://youtu.be/SJdYz6ptzPc)
+(https://youtu.be/SJdYz6ptzPc)
 
-Part 3 demonstration video::
-https://youtu.be/vJsNc4KfYlI
+## Part 3 Demonstration Video
 
+**Full Video:** [Watch on YouTube](https://www.youtube.com/watch?v=vJsNc4KfYlI)
+(https://www.youtube.com/watch?v=vJsNc4KfYlI)
+
+### Time Stamps
+
+#### Portal Demo + Regex
+- [Portal Demo + Regex](https://youtu.be/vJsNc4KfYlI)
+
+#### Protection Against Attacks
+- [Session Jacking](https://youtu.be/vJsNc4KfYlI?t=287)
+- [Click Jacking](https://youtu.be/vJsNc4KfYlI?t=383)
+- [No SQL Attacks](https://youtu.be/vJsNc4KfYlI?t=404)
+- [Cross-site Scripting (XSS)](https://youtu.be/vJsNc4KfYlI?t=419)
+- [DDoS](https://youtu.be/vJsNc4KfYlI?t=471)
+- [Man In The Middle](https://youtu.be/vJsNc4KfYlI?t=504)
+
+#### DevOps Demonstration
+- [DevOps Overview](https://youtu.be/vJsNc4KfYlI?t=512)
+- [Cloudflare](https://youtu.be/vJsNc4KfYlI?t=610)
+- [CircleCI](https://youtu.be/vJsNc4KfYlI?t=698)
+- [SonarQube](https://youtu.be/vJsNc4KfYlI?t=725)
+- [Docker on Portainer.io](https://youtu.be/vJsNc4KfYlI?t=744)
+- [Server + Firewall](https://youtu.be/vJsNc4KfYlI?t=765)
+- [Local TLS/SSL Certificate](https://youtu.be/vJsNc4KfYlI?t=810)
