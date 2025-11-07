@@ -30,6 +30,19 @@ const apiLimiter = rateLimit({
   }
 });
 
+// 24 hours in milliseconds
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+// Rate limiter: max 10 failed attempts per IP over 24 hours
+const BruteForceIPLimiter = rateLimit({
+  windowMs: ONE_DAY_MS,
+  max: 15,
+  message: {
+    status: 429,
+    message: "Too many failed login attempts from this IP — blocked for 24 hours."
+  }
+});
+
 
 
 
@@ -63,8 +76,8 @@ app.use((req, res, next) => {
 
 
 app.use('/v1/utility', utilityRoutes);
-app.use('/v1/auth', authRoutes);
-app.use('/v1/auth-employee', employeeAuthRoutes);
+app.use('/v1/auth', BruteForceIPLimiter, authRoutes);
+app.use('/v1/auth-employee', BruteForceIPLimiter, employeeAuthRoutes);
 app.use('/v1/admin', adminRoutes);
 app.use('/v1/employee', employeeRoutes);
 app.use('/v1/payment', paymentRoutes);
