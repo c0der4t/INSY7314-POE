@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
 
-
 const paymentSchema = new mongoose.Schema({
-    paymentProviderCode: { type: String, required: true },
-    destinationAccount: { type: String, required: true },
-    paymentProvider: { type: String, required: true },
-    currency: { type: String, required: true },
-    amount: { type: Number, required: true },
-    transactionHash: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
+  paymentProviderCode: String,
+  destinationAccount: String,
+  paymentProvider: String,
+  currency: String,
+  amount: Number,
+  transactionHash: String,
+  status: {
+    type: String,
+    enum: ['PENDING', 'APPROVED', 'DENIED'],
+    default: 'PENDING'
+  }
+}, { timestamps: true });
 
 
 const Payment = mongoose.model('Payment', paymentSchema);

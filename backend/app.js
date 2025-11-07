@@ -10,6 +10,9 @@ import { securityMiddlewares } from './middlewares/securityMiddleware.js';
 import utilityRoutes from './routes/utilityRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import employeeAuthRoutes from './routes/employeeAuthRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
 
 
 dotenv.config();
@@ -20,12 +23,28 @@ const app = express();
  //Raddy Z, 2022.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 100,
   message: {
     status: 429,
     message: "Too many requests from this IP, please try again later."
   }
 });
+
+// 24 hours in milliseconds
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+// Rate limiter: max 10 failed attempts per IP over 24 hours
+const BruteForceIPLimiter = rateLimit({
+  windowMs: ONE_DAY_MS,
+  max: 15,
+  message: {
+    status: 429,
+    message: "Too many failed login attempts from this IP — blocked for 24 hours."
+  }
+});
+
+
+
 
 
 //create new variables to hold where cert lives
@@ -34,6 +53,13 @@ const apiLimiter = rateLimit({
 //     cert: fs.readFileSync('./certs/localhost+1.pem'),
 // }
 
+
+
+//const utilityRoutes = require('./routes/utilityRoutes.js');
+//const authRoutes = require('./routes/authRoutes.js');
+//const employeeAuthRoutes = require('./routes/employeeAuthRoutes.js');
+//const adminRoutes = require('./routes/adminRoutes.js');
+//const employeeRoutes = require('./routes/employeeRoutes.js');
 
 
 app.use('/v1', apiLimiter);
@@ -50,7 +76,10 @@ app.use((req, res, next) => {
 
 
 app.use('/v1/utility', utilityRoutes);
-app.use('/v1/auth', authRoutes);
+app.use('/v1/auth', BruteForceIPLimiter, authRoutes);
+app.use('/v1/auth-employee', BruteForceIPLimiter, employeeAuthRoutes);
+app.use('/v1/admin', adminRoutes);
+app.use('/v1/employee', employeeRoutes);
 app.use('/v1/payment', paymentRoutes);
 
 const port = process.env.API_PORT || 3001
